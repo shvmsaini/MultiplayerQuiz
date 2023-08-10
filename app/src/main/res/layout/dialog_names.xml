@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/quiz_background"
+    android:backgroundTint="@color/primary_blue"
+    android:baselineAligned="true"
+    android:gravity="center"
+    android:maxWidth="488dp"
+    android:minWidth="488dp"
+    android:minHeight="200dp"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:layout_editor_absoluteX="16dp">
+
+    <EditText
+        android:id="@+id/name1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/quiz_background"
+        android:backgroundTint="@color/secondary_blue"
+        android:gravity="center_vertical"
+        android:hint="@string/user1_name"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textColorHint="#75768E"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/baseline_person_24"
+        app:drawableTint="@color/white" />
+
+    <EditText
+        android:id="@+id/name2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/quiz_background"
+        android:backgroundTint="@color/secondary_blue"
+        android:gravity="center_vertical"
+        android:hint="@string/user2_name"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textColorHint="#75768E"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/baseline_person_24"
+        app:drawableTint="@color/white" />
+
+    <Button
+        android:id="@+id/create"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/quiz_background"
+        android:contentDescription=""
+        android:maxWidth="10dp"
+        android:minHeight="48dp"
+        android:text="@string/lets_go"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:backgroundTint="@color/secondary_blue"
+        app:backgroundTint="@color/secondary_blue" />
+
+
+</LinearLayout>

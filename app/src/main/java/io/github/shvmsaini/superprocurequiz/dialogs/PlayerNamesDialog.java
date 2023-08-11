@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.xml.namespace.QName;
 
@@ -62,8 +63,8 @@ public class PlayerNamesDialog extends DialogFragment {
         });
 
         Dialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        Objects.requireNonNull(dialog.getWindow())
+                .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return dialog;
     }
 }

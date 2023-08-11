@@ -1,9 +1,9 @@
 package io.github.shvmsaini.superprocurequiz.strategy;
 
-public interface markingStrategy {
-    int getIncorrectMarks();
+public interface MarkingStrategy {
+    long getIncorrectMarks();
 
-    int getSkipMarks();
+    long getSkipMarks();
 
-    int getCorrectMarks();
+    long getCorrectMarks();
 }

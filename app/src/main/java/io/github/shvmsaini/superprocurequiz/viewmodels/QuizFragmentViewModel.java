@@ -20,8 +20,9 @@ public class QuizFragmentViewModel extends ViewModel {
     public MutableLiveData<String> player2Name = new MutableLiveData<>("Player2");
     public MutableLiveData<Integer> player1Score = new MutableLiveData<>(0);
     public MutableLiveData<Integer> player2Score = new MutableLiveData<>(0);
-
-    public MutableLiveData<Quiz> currentQuiz = new MutableLiveData<>();
+    public MutableLiveData<Long> timer = new MutableLiveData<>(10L);
+    public MutableLiveData<String> infoText = new MutableLiveData<>("Loading Questions...");
+    public MutableLiveData<Quiz> currentQuiz = new MutableLiveData<>(new Quiz());
     QuizRepository quizRepository;
     MutableLiveData<ArrayList<Quiz>> questionsLiveData;
     private int currentQuestionIndex = -1;
@@ -43,6 +44,7 @@ public class QuizFragmentViewModel extends ViewModel {
             questionsLiveData.postValue(quizzes);
             if (quizzes != null && currentQuestionIndex >= 0 && currentQuestionIndex < ((List<Quiz>) quizzes).size()) {
                 final Quiz quiz = quizzes.get(currentQuestionIndex);
+                currentQuiz.postValue(quiz);
                 quizLiveData.postValue(quiz);
             }
         });

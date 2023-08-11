@@ -16,6 +16,15 @@ public class Quiz implements Parcelable {
     private String question;
     private String correct_answer;
 
+    public Quiz() {
+        this.category = "";
+        this.type = "";
+        this.difficulty = "";
+        this.question = "";
+        this.correct_answer = "";
+        this.incorrect_answers = new ArrayList<>();
+    }
+
     public Quiz(String category, String type, String difficulty, String question,
                 String correct_answer, ArrayList<String> incorrect_answers) {
         this.category = category;

@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">Superprocure Quiz</string>
-    <string name="user1_name">User1</string>
+    <string name="player1_name">Player21</string>
     <string name="lets_go">Let\'s go!</string>
-    <string name="user2_name">User2</string>
+    <string name="player2_name">Player2</string>
     <string name="timer_icon">Timer Icon</string>
     <string name="skip">skip</string>
-    <string name="stop">Stop</string>
+    <string name="stop">stop</string>
     <string name="starting_in_d">Starting in %1$d</string>
     <string name="challenge_now">Challenge Now</string>
     <string name="welcome">Welcome</string>
     <string name="superprocure_quiz">Superprocure Quiz!</string>
     <string name="to">to</string>
+    <string name="picture">picture of player</string>
 </resources>

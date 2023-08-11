@@ -13,18 +13,21 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import io.github.shvmsaini.superprocurequiz.interfaces.QuizFetchingStrategy;
 import io.github.shvmsaini.superprocurequiz.models.Quiz;
 import io.github.shvmsaini.superprocurequiz.ui.HomeActivity;
 
-public class QuizService {
-    static final int amount = 2;
-    private static final String URL = "https://opentdb.com/api.php?amount=" + amount;
-    private static final String TAG = QuizService.class.getSimpleName();
-    MutableLiveData<ArrayList<Quiz>> quizList;
+public class QuizFetchingService {
+    private static final String TAG = QuizFetchingService.class.getSimpleName();
+    QuizFetchingStrategy quizFetchingStrategy;
 
+    public QuizFetchingService(QuizFetchingStrategy quizFetchingStrategy){
+        this.quizFetchingStrategy = quizFetchingStrategy;
+    }
 
     public MutableLiveData<ArrayList<Quiz>> getQuizzes() {
-        quizList = new MutableLiveData<>();
+        final String URL = "https://opentdb.com/api.php?amount=" + quizFetchingStrategy.getTotalQuiz();
+        MutableLiveData<ArrayList<Quiz>> quizList = new MutableLiveData<>();
         ArrayList<Quiz> quizzes = new ArrayList<>();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
             Log.d(TAG, "Success! Response: " + response);

@@ -33,11 +33,11 @@ public class PlayerNamesDialog extends DialogFragment {
             String player2 = binding.name2.getText().toString();
 
             if (player1.trim().length() == 0) {
-                player1 = "Player1";
+                player1 = "Player 1";
             }
 
             if (player2.trim().length() == 0) {
-                player2 = "Player2";
+                player2 = "Player 2";
             }
 
             Bundle bundle = new Bundle();

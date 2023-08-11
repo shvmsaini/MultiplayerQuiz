@@ -19,4 +19,5 @@
 
     <color name="text_alt">#000000</color>
     <color name="text">#FFFFFFFF</color>
+    <color name="transparent">#FFFFFFFF</color>
 </resources>

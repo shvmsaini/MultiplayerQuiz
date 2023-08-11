@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Superprocure Quiz</string>
-    <string name="player1_name">Player1</string>
+    <string name="player1_name">Player 1</string>
     <string name="lets_go">Let\'s go!</string>
-    <string name="player2_name">Player2</string>
+    <string name="player2_name">Player 2</string>
     <string name="timer_icon">Timer Icon</string>
     <string name="skip">skip</string>
     <string name="stop">stop</string>
@@ -16,4 +16,6 @@
     <string name="final_score">Final Score</string>
     <string name="share_results">Share Results</string>
     <string name="go_home">Go Home</string>
+    <string name="crown_image">crown image</string>
+    <string name="quiz_number">%1$d/%2$s</string>
 </resources>

@@ -1,7 +1,6 @@
 package io.github.shvmsaini.superprocurequiz.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,29 +32,14 @@ public class ResultsFragment extends Fragment {
 
         getParentFragmentManager().setFragmentResultListener(Constants.RESULTS_REQUEST_KEY, this,
                 (requestKey, result) -> {
-                    Log.d(TAG, "onCreateView:2 " + result.getLong(Constants.PLAYER1_SCORE) + " " + result.getLong(Constants.PLAYER2_SCORE));
                     viewModel.player1Score.postValue(result.getLong(Constants.PLAYER1_SCORE));
                     viewModel.player2Score.postValue(result.getLong(Constants.PLAYER2_SCORE));
+                    if (result.getLong(Constants.PLAYER1_SCORE) > result.getLong(Constants.PLAYER2_SCORE)) {
+                        binding.crownP1.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.crownP2.setVisibility(View.VISIBLE);
+                    }
                 });
-
-        viewModel.player1Score.observe(getViewLifecycleOwner(), val1 -> {
-            viewModel.player2Score.observe(getViewLifecycleOwner(), val2 -> {
-                Log.d(TAG, "onCreateView: " + val2 + " " + val1);
-                if (val1 > val2) {
-//                    binding.player1PhotoLayout.getLayoutParams().height = 300;
-//                    binding.player1PhotoLayout.getLayoutParams().width = 300;
-//                    binding.player1PhotoLayout.setRadius(1000);
-                    binding.player1Photo.getLayoutParams().width = 300;
-                    binding.player1Photo.getLayoutParams().height = 300;
-                } else {
-//                    binding.player2PhotoLayout.getLayoutParams().height = 300;
-//                    binding.player2PhotoLayout.getLayoutParams().width = 300;
-//                    binding.player2PhotoLayout.setRadius(100);
-                    binding.player2Photo.getLayoutParams().width = 300;
-                    binding.player2Photo.getLayoutParams().height = 300;
-                }
-            });
-        });
 
         return binding.getRoot();
     }

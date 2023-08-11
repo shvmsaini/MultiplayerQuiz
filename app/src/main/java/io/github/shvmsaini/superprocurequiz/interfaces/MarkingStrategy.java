@@ -1,4 +1,4 @@
-package io.github.shvmsaini.superprocurequiz.strategy;
+package io.github.shvmsaini.superprocurequiz.interfaces;
 
 public interface MarkingStrategy {
     long getIncorrectMarks();

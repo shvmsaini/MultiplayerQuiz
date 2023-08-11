@@ -1,6 +1,6 @@
-package io.github.shvmsaini.superprocurequiz.business;
+package io.github.shvmsaini.superprocurequiz.strategy;
 
-import io.github.shvmsaini.superprocurequiz.strategy.MarkingStrategy;
+import io.github.shvmsaini.superprocurequiz.interfaces.MarkingStrategy;
 
 public class TieBreakerMarkingStrategy implements MarkingStrategy {
     @Override
@@ -15,6 +15,6 @@ public class TieBreakerMarkingStrategy implements MarkingStrategy {
 
     @Override
     public long getCorrectMarks() {
-        return 1;
+        return +1;
     }
 }

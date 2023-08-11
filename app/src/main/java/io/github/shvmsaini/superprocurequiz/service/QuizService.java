@@ -17,7 +17,8 @@ import io.github.shvmsaini.superprocurequiz.models.Quiz;
 import io.github.shvmsaini.superprocurequiz.ui.HomeActivity;
 
 public class QuizService {
-    private static final String URL = "https://opentdb.com/api.php?amount=5";
+    static final int amount = 1;
+    private static final String URL = "https://opentdb.com/api.php?amount=" + amount;
     private static final String TAG = QuizService.class.getSimpleName();
     MutableLiveData<ArrayList<Quiz>> quizList;
 

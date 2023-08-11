@@ -59,12 +59,12 @@ public class QuizFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
-        getParentFragmentManager().setFragmentResultListener(Constants.REQUEST_KEY, this,
+        getParentFragmentManager().setFragmentResultListener(Constants.NAMES_REQUEST_KEY, this,
                 (requestKey, result) -> {
                     viewModel.player1Name.setValue(
-                            Objects.requireNonNull(result.get("user1")).toString());
+                            Objects.requireNonNull(result.get(Constants.PLAYER1_NAME)).toString());
                     viewModel.player2Name.setValue(
-                            Objects.requireNonNull(result.get("user2")).toString());
+                            Objects.requireNonNull(result.get(Constants.PLAYER2_NAME)).toString());
                 });
 
         markingStrategy = new DefaultMarkingStrategy();
@@ -73,12 +73,13 @@ public class QuizFragment extends Fragment {
 
         getNextQuiz(options);
 
-        binding.pass.setOnClickListener(view -> {
+        binding.skip.setOnClickListener(view -> {
             if (player1Turn) {
-                player1Choice.setValue(null);
+                player1Score += markingStrategy.getSkipMarks();
             } else {
-                player2Choice.setValue(null);
+                player2Score += markingStrategy.getSkipMarks();
             }
+            stopTimer();
         });
 
         turns.observe(getViewLifecycleOwner(), integer -> {
@@ -87,7 +88,25 @@ public class QuizFragment extends Fragment {
                 startQuizStartTimer();
 //                disableTimers();
             } else {
-                if (integer == 10) { // Second Player chosen, Last quiz
+                if (integer == 2) { // Second Player chosen, Last quiz
+                    Log.d(TAG, "onCreateView: Quiz Ended");
+                    final long p1finalScores = viewModel.player1Score.getValue() == null ? 0 : viewModel.player1Score.getValue();
+                    final long p2finalScores = viewModel.player2Score.getValue() == null ? 0 : viewModel.player2Score.getValue();
+                    if (p1finalScores != p2finalScores) {
+                        Bundle bundle = new Bundle();
+                        bundle.putLong(Constants.PLAYER1_SCORE, p1finalScores);
+                        bundle.putLong(Constants.PLAYER2_SCORE, p2finalScores);
+
+                        ResultsFragment resultsFragment = new ResultsFragment();
+                        resultsFragment.setArguments(bundle);
+                        getParentFragmentManager().setFragmentResult(Constants.RESULTS_REQUEST_KEY, bundle);
+                        getParentFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container_view_tag, resultsFragment)
+                                .commit();
+                    } else {
+                        Log.d(TAG, "onCreateView: TieBreaker Round");
+                    }
+
 //                    disableTimers();
 //                showResult(options);
                 } else {
@@ -121,8 +140,6 @@ public class QuizFragment extends Fragment {
             options[I].setOnClickListener(view -> {
                 if (waiting) return;
                 waiting = true;
-                Log.d(TAG, "setupQuizUI: Option Chosen");
-
 
                 // Marks
                 if (player1Turn) {
@@ -187,13 +204,13 @@ public class QuizFragment extends Fragment {
                 viewModel.infoText.setValue(
                         getResources().getString(R.string.starting_in_d, millisUntilFinished / 1000)
                 );
-                binding.pass.setEnabled(false);
+                binding.skip.setEnabled(false);
             }
 
             @Override
             public void onFinish() {
                 Log.d(TAG, "onFinish: ");
-                binding.pass.setEnabled(true);
+                binding.skip.setEnabled(true);
                 viewModel.infoText.setValue(player1Turn ? "Player 1 Turn" : "Player 2 Turn");
                 waiting = false;
 //                new Handler().postDelayed(() -> {
@@ -210,7 +227,6 @@ public class QuizFragment extends Fragment {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                Log.d(TAG, "onTick: ");
                 viewModel.timer.setValue(millisUntilFinished / 1000);
             }
 
@@ -234,8 +250,6 @@ public class QuizFragment extends Fragment {
         countDownTimer.cancel();
         viewModel.timer.setValue(10L);
         countDownTimer.onFinish();
-        Log.d(TAG, "cancelled");
-//        viewModel.infoText.postValue(player1Turn ? "Player 1 Turn" : "Player 2 Turn");
     }
 
     private void getNextQuiz(TextView[] options) {
@@ -245,7 +259,6 @@ public class QuizFragment extends Fragment {
             setupQuizUI(quiz, options);
             makeScores();
             startQuizStartTimer();
-//            new Handler().postDelayed(this::startQuizStartTimer, 1000);
         });
     }
 }

@@ -47,12 +47,12 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/user1_border"
-                        android:layout_width="63dp"
-                        android:layout_height="63dp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:layout_gravity="center"
                         android:layout_margin="4dp"
                         android:padding="4dp"
-                        app:cardCornerRadius="63dp">
+                        app:cardCornerRadius="64dp">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/user1_photoLayout"
@@ -182,12 +182,12 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/user2_border"
-                        android:layout_width="63dp"
-                        android:layout_height="63dp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:layout_gravity="center"
                         android:layout_margin="4dp"
                         android:padding="4dp"
-                        app:cardCornerRadius="63dp">
+                        app:cardCornerRadius="64dp">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/user2_photoLayout"
@@ -264,8 +264,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:background="@drawable/normal_style"
-                                android:padding="16dp"
                                 android:gravity="center"
+                                android:padding="16dp"
                                 android:text="@{Html.fromHtml(viewModel.currentQuiz.question,Html.FROM_HTML_MODE_COMPACT)}"
                                 android:textColor="@color/white"
                                 android:textSize="20sp" />
@@ -285,9 +285,9 @@
                             android:id="@+id/quizNumberCV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/button_style"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
-                            android:background="@drawable/button_style"
                             android:text="@{viewModel.totalQuiz == `inf` ? `Tie Breaker Round` : @string/quiz_number(viewModel.quizNumber, viewModel.totalQuiz)}"
                             android:textColor="@color/white"
                             android:textSize="18sp" />

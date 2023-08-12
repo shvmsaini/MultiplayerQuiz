@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/quiz_background"
+    android:backgroundTint="@color/primary_blue"
+    android:baselineAligned="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp"
+    tools:layout_editor_absoluteX="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/white"
+        android:text="@string/exit_prompt" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/quiz_background"
+            android:backgroundTint="@color/incorrect"
+            android:contentDescription=""
+            android:minHeight="48dp"
+            android:text="@string/stop"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:backgroundTint="@color/incorrect" />
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/quiz_background"
+            android:backgroundTint="@color/secondary_blue"
+            android:contentDescription=""
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:backgroundTint="@color/secondary_blue" />
+    </LinearLayout>
+
+</LinearLayout>

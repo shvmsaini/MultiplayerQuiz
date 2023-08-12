@@ -23,4 +23,6 @@
     <string name="crown_image">crown image</string>
     <string name="quiz_number">%1$d/%2$s</string>
     <string name="share">"Hi! I'm using &appname; app to play awesome multiplayer quiz. You should try!"</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit_prompt">Are you sure you want to exit?</string>
 </resources>

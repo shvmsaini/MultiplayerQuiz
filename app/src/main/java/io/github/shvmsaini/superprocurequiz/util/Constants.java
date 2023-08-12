@@ -14,4 +14,6 @@ public class Constants {
     public final static long QUIZ_STARTING_TIME = 3000;
     public final static long ONE_SECOND = 1000;
 
+    public static final String STOP = "STOP";
+    public static final String STOP_KEY = "STOP_KEY";
 }

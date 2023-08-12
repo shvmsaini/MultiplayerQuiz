@@ -22,11 +22,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Objects;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.github.shvmsaini.superprocurequiz.R;
 import io.github.shvmsaini.superprocurequiz.databinding.FragmentQuizBinding;
+import io.github.shvmsaini.superprocurequiz.dialogs.StopQuizDialog;
 import io.github.shvmsaini.superprocurequiz.interfaces.MarkingStrategy;
 import io.github.shvmsaini.superprocurequiz.interfaces.QuizTakingStrategy;
 import io.github.shvmsaini.superprocurequiz.models.Quiz;
@@ -42,11 +41,8 @@ public class QuizFragment extends Fragment {
     private static final String TAG = QuizFragment.class.getSimpleName();
     static int player1Score = 0;
     static int player2Score = 0;
-    long elapsed = 0;
     QuizTakingStrategy quizTakingStrategy;
     CountDownTimer countDownTimer;
-    // Timer since CountDownTimer has upstream issue on onCancel()
-    Timer timer;
     FragmentQuizBinding binding;
     QuizFragmentViewModel viewModel;
     boolean tieBreakerMode = false;
@@ -80,7 +76,25 @@ public class QuizFragment extends Fragment {
                             Objects.requireNonNull(result.get(Constants.PLAYER1_NAME)).toString());
                     viewModel.player2Name.setValue(
                             Objects.requireNonNull(result.get(Constants.PLAYER2_NAME)).toString());
+//                    Log.d(TAG, "onCreateView: ");
+//                    boolean stop = result.getBoolean(Constants.STOP_KEY);
+//                    if (stop) {
+//                        if (countDownTimer != null)
+//                            countDownTimer.cancel();
+//                        requireActivity().finish();
+//                        startActivity(new Intent(requireActivity(), HomeActivity.class));
+//                    }
                 });
+        
+        getParentFragmentManager().setFragmentResultListener(Constants.STOP_KEY, this, (requestKey, result) -> {
+            boolean stop = result.getBoolean(Constants.STOP);
+            if (stop) {
+                if (countDownTimer != null)
+                    countDownTimer.cancel();
+                requireActivity().finish();
+                startActivity(new Intent(requireActivity(), HomeActivity.class));
+            }
+        });
 
         markingStrategy = new DefaultMarkingStrategy();
         quizTakingStrategy = new DefaultQuizTakingStrategy();
@@ -92,9 +106,8 @@ public class QuizFragment extends Fragment {
 
         binding.skip.setOnClickListener(view -> stopTimer());
         binding.stop.setOnClickListener(view -> {
-            countDownTimer.cancel();
-            requireActivity().finish();
-            startActivity(new Intent(requireActivity(), HomeActivity.class));
+            StopQuizDialog dialog = new StopQuizDialog();
+            dialog.show(getParentFragmentManager(), "Stop Quiz Dialog");
         });
 
         turns.observe(getViewLifecycleOwner(), turn -> {
@@ -290,32 +303,6 @@ public class QuizFragment extends Fragment {
      * Starts answering timer of {@value Constants#QUIZ_DURATION_TIME} seconds
      */
     private void startQuizAnsweringTimer() {
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                elapsed += Constants.ONE_SECOND;
-//                if (elapsed >= Constants.QUIZ_DURATION_TIME) {
-//                    finishedAnsweringTimer();
-//                    return;
-//                }
-//                // Tick Block
-//                viewModel.timer.setValue(elapsed / 1000);
-//                int progress = (int) (elapsed / 1000) * 10;
-//                binding.progressHorizontal.setProgress(progress, true);
-//                if (progress < 25) {
-//                    binding.progressHorizontal.setIndicatorColor(getResources()
-//                            .getColor(R.color.pg_25, null));
-//                } else if (progress < 50) {
-//                    binding.progressHorizontal.setIndicatorColor(getResources()
-//                            .getColor(R.color.pg_50, null));
-//                } else if (progress < 75) {
-//                    binding.progressHorizontal.setIndicatorColor(getResources()
-//                            .getColor(R.color.pg_75, null));
-//                }
-//            }
-//        };
-//        timer = new Timer();
-//        timer.schedule(timerTask, Constants.QUIZ_DURATION_TIME, Constants.QUIZ_DURATION_TIME);
         countDownTimer = new CountDownTimer(Constants.QUIZ_DURATION_TIME, 1000) {
 
             @Override
@@ -352,20 +339,6 @@ public class QuizFragment extends Fragment {
         }.start();
     }
 
-//    private void finishedAnsweringTimer() {
-//        // Finished Block
-//        if (player1Turn && player1Choice.getValue() == null) {
-//            player1Score += markingStrategy.getSkipMarks();
-//        } else if (!player1Turn && player2Choice.getValue() == null) {
-//            player2Score += markingStrategy.getSkipMarks();
-//        }
-//        player1Turn = !player1Turn;
-//        turns.setValue(turns.getValue() == null ? 1 : turns.getValue() + 1);
-//        binding.progressHorizontal.setProgress(100, true);
-//        binding.progressHorizontal.setIndicatorColor(getResources()
-//                .getColor(R.color.pg_100, null));
-//        timer.cancel();
-//    }
 
     /**
      * Resets running timer, flips player turn, and turn is incremented

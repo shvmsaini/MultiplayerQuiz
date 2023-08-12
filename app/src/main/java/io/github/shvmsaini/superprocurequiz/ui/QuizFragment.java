@@ -1,5 +1,7 @@
 package io.github.shvmsaini.superprocurequiz.ui;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -19,6 +22,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.github.shvmsaini.superprocurequiz.R;
 import io.github.shvmsaini.superprocurequiz.databinding.FragmentQuizBinding;
@@ -35,11 +40,13 @@ import io.github.shvmsaini.superprocurequiz.viewmodels.QuizFragmentViewModel;
 
 public class QuizFragment extends Fragment {
     private static final String TAG = QuizFragment.class.getSimpleName();
-
     static int player1Score = 0;
     static int player2Score = 0;
+    long elapsed = 0;
     QuizTakingStrategy quizTakingStrategy;
     CountDownTimer countDownTimer;
+    // Timer since CountDownTimer has upstream issue on onCancel()
+    Timer timer;
     FragmentQuizBinding binding;
     QuizFragmentViewModel viewModel;
     boolean tieBreakerMode = false;
@@ -84,6 +91,11 @@ public class QuizFragment extends Fragment {
         setupNextQuiz(options);
 
         binding.skip.setOnClickListener(view -> stopTimer());
+        binding.stop.setOnClickListener(view -> {
+            countDownTimer.cancel();
+            requireActivity().finish();
+            startActivity(new Intent(requireActivity(), HomeActivity.class));
+        });
 
         turns.observe(getViewLifecycleOwner(), turn -> {
             resetChoices();
@@ -95,18 +107,21 @@ public class QuizFragment extends Fragment {
                 final long p2finalScores = viewModel.player2Score.getValue() == null ? 0 : viewModel.player2Score.getValue();
                 if (tieBreakerMode && (p1finalScores != p2finalScores))
                     endQuiz(p1finalScores, p2finalScores);
-                if (turn == (quizTakingStrategy.getQuizNumber() * 2)) { // Last
+                else if (turn == (quizTakingStrategy.getQuizNumber() * 2)) { // Last
                     Log.d(TAG, "onCreateView: Final score: P1: " + p1finalScores + ", P2: " + p2finalScores);
                     if (p1finalScores != p2finalScores) {
                         endQuiz(p1finalScores, p2finalScores);
                     } else {
                         Log.d(TAG, "onCreateView: TieBreaker Round");
                         viewModel.totalQuiz.postValue("inf");
+                        binding.quizNumberCV.setBackground(
+                                ResourcesCompat.getDrawable(getResources(), R.drawable.tie_breaker_style, null));
                         markingStrategy = new TieBreakerMarkingStrategy();
                         quizTakingStrategy = new TieBreakerQuizTakingStrategy();
                         viewModel.setQuizFetchingStrategy(new TieBreakerQuizFetchingStrategy());
                         tieBreakerMode = true;
                         viewModel.currentQuiz.setValue(new Quiz());
+                        resetQuiz(options);
                         viewModel.infoText.setValue("Loading more questions...");
                         setupNextQuiz(options);
                     }
@@ -123,6 +138,7 @@ public class QuizFragment extends Fragment {
 
     /**
      * Ends quiz, moves to EndQuizFragment.class
+     *
      * @param p1finalScores final score of player 1
      * @param p2finalScores final score of player 2
      */
@@ -130,6 +146,8 @@ public class QuizFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.PLAYER1_SCORE, p1finalScores);
         bundle.putLong(Constants.PLAYER2_SCORE, p2finalScores);
+        bundle.putString(Constants.PLAYER1_NAME, viewModel.player1Name.getValue());
+        bundle.putString(Constants.PLAYER2_NAME, viewModel.player2Name.getValue());
 
         ResultsFragment resultsFragment = new ResultsFragment();
         resultsFragment.setArguments(bundle);
@@ -180,6 +198,7 @@ public class QuizFragment extends Fragment {
 
     /**
      * Reset's quiz QI, i.e. options are set to their original color and Text is set to empty.
+     *
      * @param options All options
      */
     private void resetQuiz(final TextView[] options) {
@@ -203,8 +222,9 @@ public class QuizFragment extends Fragment {
 
     /**
      * Shows Results i.e. which options are correct and which are not.
+     *
      * @param options All Options
-     * @param ind Index of current answer option
+     * @param ind     Index of current answer option
      */
     private void showResult(final TextView[] options, final int ind) {
         for (int i = 0; i < options.length; ++i) {
@@ -238,8 +258,20 @@ public class QuizFragment extends Fragment {
 
             @Override
             public void onTick(long millisUntilFinished) {
+                if (player1Turn) {
+                    binding.user1Border.setBackgroundTintList(getResources()
+                            .getColorStateList(R.color.gold, null));
+                    binding.user2Border.setBackgroundTintList(getResources()
+                            .getColorStateList(R.color.text, null));
+                } else {
+                    binding.user1Border.setBackgroundTintList(getResources()
+                            .getColorStateList(R.color.text, null));
+                    binding.user2Border.setBackgroundTintList(getResources()
+                            .getColorStateList(R.color.gold, null));
+                }
+                final long t = millisUntilFinished / 1000;
                 viewModel.infoText.setValue(getResources().getString(R.string.starting_in_d,
-                        millisUntilFinished / 1000 + 1));
+                        t + 1));
                 binding.skip.setEnabled(false);
             }
 
@@ -258,11 +290,50 @@ public class QuizFragment extends Fragment {
      * Starts answering timer of {@value Constants#QUIZ_DURATION_TIME} seconds
      */
     private void startQuizAnsweringTimer() {
+//        TimerTask timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                elapsed += Constants.ONE_SECOND;
+//                if (elapsed >= Constants.QUIZ_DURATION_TIME) {
+//                    finishedAnsweringTimer();
+//                    return;
+//                }
+//                // Tick Block
+//                viewModel.timer.setValue(elapsed / 1000);
+//                int progress = (int) (elapsed / 1000) * 10;
+//                binding.progressHorizontal.setProgress(progress, true);
+//                if (progress < 25) {
+//                    binding.progressHorizontal.setIndicatorColor(getResources()
+//                            .getColor(R.color.pg_25, null));
+//                } else if (progress < 50) {
+//                    binding.progressHorizontal.setIndicatorColor(getResources()
+//                            .getColor(R.color.pg_50, null));
+//                } else if (progress < 75) {
+//                    binding.progressHorizontal.setIndicatorColor(getResources()
+//                            .getColor(R.color.pg_75, null));
+//                }
+//            }
+//        };
+//        timer = new Timer();
+//        timer.schedule(timerTask, Constants.QUIZ_DURATION_TIME, Constants.QUIZ_DURATION_TIME);
         countDownTimer = new CountDownTimer(Constants.QUIZ_DURATION_TIME, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
                 viewModel.timer.setValue(millisUntilFinished / 1000);
+                int progress = (int) (millisUntilFinished / 1000) * 10;
+                binding.progressHorizontal.setProgress(progress, true);
+                if (progress < 25) {
+                    binding.progressHorizontal.setIndicatorColor(getResources()
+                            .getColor(R.color.pg_25, null));
+                } else if (progress < 50) {
+                    binding.progressHorizontal.setIndicatorColor(getResources()
+                            .getColor(R.color.pg_50, null));
+                } else if (progress < 75) {
+                    binding.progressHorizontal.setIndicatorColor(getResources()
+                            .getColor(R.color.pg_75, null));
+                }
+
             }
 
             @Override
@@ -274,9 +345,27 @@ public class QuizFragment extends Fragment {
                 }
                 player1Turn = !player1Turn;
                 turns.setValue(turns.getValue() == null ? 1 : turns.getValue() + 1);
+                binding.progressHorizontal.setProgress(100, true);
+                binding.progressHorizontal.setIndicatorColor(getResources()
+                        .getColor(R.color.pg_100, null));
             }
         }.start();
     }
+
+//    private void finishedAnsweringTimer() {
+//        // Finished Block
+//        if (player1Turn && player1Choice.getValue() == null) {
+//            player1Score += markingStrategy.getSkipMarks();
+//        } else if (!player1Turn && player2Choice.getValue() == null) {
+//            player2Score += markingStrategy.getSkipMarks();
+//        }
+//        player1Turn = !player1Turn;
+//        turns.setValue(turns.getValue() == null ? 1 : turns.getValue() + 1);
+//        binding.progressHorizontal.setProgress(100, true);
+//        binding.progressHorizontal.setIndicatorColor(getResources()
+//                .getColor(R.color.pg_100, null));
+//        timer.cancel();
+//    }
 
     /**
      * Resets running timer, flips player turn, and turn is incremented
@@ -299,5 +388,14 @@ public class QuizFragment extends Fragment {
             setupQuizUI(quiz, options);
             startQuizStartTimer();
         });
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "onConfigurationChanged: QuizFragment");
+//        getParentFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container_view_tag, new QuizFragment())
+//                .commit();
     }
 }

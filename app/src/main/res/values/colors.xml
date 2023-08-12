@@ -20,4 +20,10 @@
     <color name="text_alt">#000000</color>
     <color name="text">#FFFFFFFF</color>
     <color name="transparent">#FFFFFFFF</color>
+
+    <!-- Progress Colors -->
+    <color name="pg_100">#2BED00</color>
+    <color name="pg_75">#EAC300</color>
+    <color name="pg_50">#E65100</color>
+    <color name="pg_25">#DF0000</color>
 </resources>

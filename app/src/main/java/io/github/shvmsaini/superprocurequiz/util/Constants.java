@@ -12,5 +12,6 @@ public class Constants {
     public final static String RESULTS_REQUEST_KEY = "RESULTS_REQUEST_KEY";
     public final static long QUIZ_DURATION_TIME = 10000;
     public final static long QUIZ_STARTING_TIME = 3000;
+    public final static long ONE_SECOND = 1000;
 
 }

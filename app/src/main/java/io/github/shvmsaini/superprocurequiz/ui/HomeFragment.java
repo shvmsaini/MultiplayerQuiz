@@ -29,19 +29,20 @@ public class HomeFragment extends Fragment {
 
         binding.create.setOnClickListener(view -> new PlayerNamesDialog()
                 .show(requireActivity().getSupportFragmentManager(), "Player Names Dialog"));
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
-                new OnBackPressedCallback(true) {
-                    @Override
-                    public void handleOnBackPressed() {
-                        Log.d(TAG, "handleOnBackPressed: ");
-                        if (back_pressed + TIME_DELAY > System.currentTimeMillis())
-                            Toast.makeText(requireContext(), "Press again to stop and exit.",
-                                    Toast.LENGTH_SHORT).show();
-                        else
-                            requireActivity().onBackPressed();
-                        back_pressed = System.currentTimeMillis();
-                    }
-                });
+
+//        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+//                new OnBackPressedCallback(true) {
+//                    @Override
+//                    public void handleOnBackPressed() {
+//                        Log.d(TAG, "handleOnBackPressed: ");
+//                        if (back_pressed + TIME_DELAY > System.currentTimeMillis())
+//                            Toast.makeText(requireContext(), "Press again to stop and exit.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        else
+//                            requireActivity().onBackPressed();
+//                        back_pressed = System.currentTimeMillis();
+//                    }
+//                });
 
         return binding.getRoot();
     }

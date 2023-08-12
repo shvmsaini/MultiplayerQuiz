@@ -9,9 +9,9 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/baseline_quiz_24"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/baseline_quiz_24"
         android:supportsRtl="true"
         android:theme="@style/Theme.SuperprocureQuiz"
         tools:targetApi="33">
@@ -28,7 +28,10 @@
         <activity
             android:name=".ui.HomeActivity"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:configChanges="uiMode"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

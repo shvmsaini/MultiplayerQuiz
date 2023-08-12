@@ -45,6 +45,8 @@ public class ResultsFragment extends Fragment {
                 (requestKey, result) -> {
                     viewModel.player1Score.postValue(result.getLong(Constants.PLAYER1_SCORE));
                     viewModel.player2Score.postValue(result.getLong(Constants.PLAYER2_SCORE));
+                    viewModel.player1Name.postValue(result.getString(Constants.PLAYER1_NAME));
+                    viewModel.player2Name.postValue(result.getString(Constants.PLAYER2_NAME));
                     if (result.getLong(Constants.PLAYER1_SCORE) > result.getLong(Constants.PLAYER2_SCORE)) {
                         binding.crownP1.setVisibility(View.VISIBLE);
                         binding.user1Border.setBackgroundTintList(getResources().getColorStateList(
@@ -68,6 +70,7 @@ public class ResultsFragment extends Fragment {
                     .beginTransaction()
                     .replace(R.id.fragment_container_view_tag, new HomeFragment())
                     .commit();
+            requireActivity().getViewModelStore().clear();
         });
 
         return binding.getRoot();

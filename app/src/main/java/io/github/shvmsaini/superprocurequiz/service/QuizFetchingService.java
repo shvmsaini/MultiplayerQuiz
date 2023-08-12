@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import io.github.shvmsaini.superprocurequiz.interfaces.QuizFetchingStrategy;
 import io.github.shvmsaini.superprocurequiz.models.Quiz;
 import io.github.shvmsaini.superprocurequiz.ui.HomeActivity;
+import io.github.shvmsaini.superprocurequiz.volley.VolleySingleton;
 
 /**
  * Service to fetch quiz from remote database according to QuizFetchingStrategy.
@@ -67,7 +68,7 @@ public class QuizFetchingService {
             }
         }, error -> Log.d(TAG, error.toString()));
 
-        HomeActivity.requestQueue.add(request);
+        HomeActivity.volleySingleton.addToRequestQueue(request);
 
         return quizList;
     }

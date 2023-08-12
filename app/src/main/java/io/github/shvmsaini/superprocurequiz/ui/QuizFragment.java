@@ -2,6 +2,7 @@ package io.github.shvmsaini.superprocurequiz.ui;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +28,8 @@ import io.github.shvmsaini.superprocurequiz.models.Quiz;
 import io.github.shvmsaini.superprocurequiz.strategy.DefaultMarkingStrategy;
 import io.github.shvmsaini.superprocurequiz.strategy.DefaultQuizTakingStrategy;
 import io.github.shvmsaini.superprocurequiz.strategy.TieBreakerMarkingStrategy;
-import io.github.shvmsaini.superprocurequiz.strategy.TieBreakingQuizFetchingStrategy;
-import io.github.shvmsaini.superprocurequiz.strategy.TieBreakingQuizTakingStrategy;
+import io.github.shvmsaini.superprocurequiz.strategy.TieBreakerQuizFetchingStrategy;
+import io.github.shvmsaini.superprocurequiz.strategy.TieBreakerQuizTakingStrategy;
 import io.github.shvmsaini.superprocurequiz.util.Constants;
 import io.github.shvmsaini.superprocurequiz.viewmodels.QuizFragmentViewModel;
 
@@ -82,19 +83,11 @@ public class QuizFragment extends Fragment {
 
         setupNextQuiz(options);
 
-        binding.skip.setOnClickListener(view -> {
-//            if (player1Turn)
-//                player1Score += markingStrategy.getSkipMarks();
-//            else
-//                player2Score += markingStrategy.getSkipMarks();
-            stopTimer();
-        });
+        binding.skip.setOnClickListener(view -> stopTimer());
 
         turns.observe(getViewLifecycleOwner(), turn -> {
-            Log.d(TAG, "onCreateView: Inturns");
             resetChoices();
             if (turn % 2 == 1) { // Odd, First Player Chosen
-                Log.d(TAG, "onCreateView: starting timer for second player");
                 startQuizStartTimer();
             } else {
                 makeScores();
@@ -110,12 +103,17 @@ public class QuizFragment extends Fragment {
                         Log.d(TAG, "onCreateView: TieBreaker Round");
                         viewModel.totalQuiz.postValue("inf");
                         markingStrategy = new TieBreakerMarkingStrategy();
-                        quizTakingStrategy = new TieBreakingQuizTakingStrategy();
-                        viewModel.setQuizFetchingStrategy(new TieBreakingQuizFetchingStrategy());
+                        quizTakingStrategy = new TieBreakerQuizTakingStrategy();
+                        viewModel.setQuizFetchingStrategy(new TieBreakerQuizFetchingStrategy());
                         tieBreakerMode = true;
-                        startQuizStartTimer();
+                        viewModel.currentQuiz.setValue(new Quiz());
+                        viewModel.infoText.setValue("Loading more questions...");
+                        setupNextQuiz(options);
                     }
-                } else setupNextQuiz(options);
+                } else {
+                    showResult(options, correctAnswerInd.getValue() == null ? 0 : correctAnswerInd.getValue());
+                    new Handler().postDelayed(() -> setupNextQuiz(options), 1000);
+                }
 
             }
         });
@@ -123,6 +121,11 @@ public class QuizFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Ends quiz, moves to EndQuizFragment.class
+     * @param p1finalScores final score of player 1
+     * @param p2finalScores final score of player 2
+     */
     private void endQuiz(final long p1finalScores, final long p2finalScores) {
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.PLAYER1_SCORE, p1finalScores);
@@ -168,31 +171,42 @@ public class QuizFragment extends Fragment {
                     player2Score += (I == correctOptionIndex) ? markingStrategy.getCorrectMarks() : markingStrategy.getIncorrectMarks();
                 }
 
-                stopTimer();
-
                 options[I].setBackgroundTintList(getResources().getColorStateList(R.color.purple_200, null));
+                stopTimer();
             });
 
         }
     }
 
-    private void resetQuiz(TextView[] options) {
+    /**
+     * Reset's quiz QI, i.e. options are set to their original color and Text is set to empty.
+     * @param options All options
+     */
+    private void resetQuiz(final TextView[] options) {
         player1Choice.setValue(null);
         player2Choice.setValue(null);
         for (TextView option : options) {
+            option.setText("");
             option.setBackgroundTintList(getResources().getColorStateList(
                     R.color.darkest_blue, null));
             option.setVisibility(View.VISIBLE);
         }
     }
 
+    /**
+     * Reset Previous Choice to null
+     */
     private void resetChoices() {
-        Log.d(TAG, "resetChoices: ");
         player1Choice.setValue(null);
         player2Choice.setValue(null);
     }
 
-    private void showResult(TextView[] options, int ind) {
+    /**
+     * Shows Results i.e. which options are correct and which are not.
+     * @param options All Options
+     * @param ind Index of current answer option
+     */
+    private void showResult(final TextView[] options, final int ind) {
         for (int i = 0; i < options.length; ++i) {
             if (i == ind)
                 options[i].setBackgroundTintList(getResources().getColorStateList(
@@ -209,7 +223,6 @@ public class QuizFragment extends Fragment {
     private void makeScores() {
         final Integer p1CurrentScore = viewModel.player1Score.getValue();
         final Integer p2CurrentScore = viewModel.player2Score.getValue();
-        Log.d(TAG, "makeScores: player1Score" + player1Score + " p2: " + player2Score);
         viewModel.player1Score.setValue((p1CurrentScore == null ? 0 : p1CurrentScore) + player1Score);
         viewModel.player2Score.setValue((p2CurrentScore == null ? 0 : p2CurrentScore) + player2Score);
         player1Score = 0;
@@ -241,6 +254,9 @@ public class QuizFragment extends Fragment {
         }.start();
     }
 
+    /**
+     * Starts answering timer of {@value Constants#QUIZ_DURATION_TIME} seconds
+     */
     private void startQuizAnsweringTimer() {
         countDownTimer = new CountDownTimer(Constants.QUIZ_DURATION_TIME, 1000) {
 
@@ -251,17 +267,10 @@ public class QuizFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                Log.d(TAG, "onFinish: AnsweringTimer");
-                Log.d(TAG, "onFinish: " + player1Turn + " 1Choice:" + player1Choice.getValue() +
-                        " 2Choice:" + player2Choice.getValue());
                 if (player1Turn && player1Choice.getValue() == null) {
-                    Log.d(TAG, "onFinish: 1");
                     player1Score += markingStrategy.getSkipMarks();
                 } else if (!player1Turn && player2Choice.getValue() == null) {
-                    Log.d(TAG, "onFinish: " + player2Score);
-                    Log.d(TAG, "onFinish: 2 + " + markingStrategy.getSkipMarks());
                     player2Score += markingStrategy.getSkipMarks();
-                    Log.d(TAG, "onFinish: " + player2Score);
                 }
                 player1Turn = !player1Turn;
                 turns.setValue(turns.getValue() == null ? 1 : turns.getValue() + 1);
@@ -278,6 +287,9 @@ public class QuizFragment extends Fragment {
         countDownTimer.onFinish();
     }
 
+    /**
+     * Setup Next Quiz, Fetch from database, setup quiz UI, and finally Start timer
+     */
     private void setupNextQuiz(TextView[] options) {
         viewModel.getNextQuiz().observe(getViewLifecycleOwner(), quiz -> {
             waiting = true; // disable options buttons

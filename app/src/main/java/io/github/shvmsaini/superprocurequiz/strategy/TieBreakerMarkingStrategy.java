@@ -2,6 +2,9 @@ package io.github.shvmsaini.superprocurequiz.strategy;
 
 import io.github.shvmsaini.superprocurequiz.interfaces.MarkingStrategy;
 
+/**
+ * Marking Strategy when tie breaker mode is on.
+ */
 public class TieBreakerMarkingStrategy implements MarkingStrategy {
     @Override
     public long getIncorrectMarks() {

@@ -17,14 +17,24 @@ import io.github.shvmsaini.superprocurequiz.interfaces.QuizFetchingStrategy;
 import io.github.shvmsaini.superprocurequiz.models.Quiz;
 import io.github.shvmsaini.superprocurequiz.ui.HomeActivity;
 
+/**
+ * Service to fetch quiz from remote database according to QuizFetchingStrategy.
+ */
 public class QuizFetchingService {
     private static final String TAG = QuizFetchingService.class.getSimpleName();
     QuizFetchingStrategy quizFetchingStrategy;
 
+    /**
+     * Initializes Instance with QuizFetchingStrategy Instance
+     * @param quizFetchingStrategy QuizFetchingStrategy Instance
+     */
     public QuizFetchingService(QuizFetchingStrategy quizFetchingStrategy){
         this.quizFetchingStrategy = quizFetchingStrategy;
     }
 
+    /**
+     * @return Returns List of fetched quiz
+     */
     public MutableLiveData<ArrayList<Quiz>> getQuizzes() {
         final String URL = "https://opentdb.com/api.php?amount=" + quizFetchingStrategy.getTotalQuiz();
         MutableLiveData<ArrayList<Quiz>> quizList = new MutableLiveData<>();

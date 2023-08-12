@@ -1,5 +1,9 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Superprocure Quiz</string>
+<!DOCTYPE resources [
+    <!ENTITY appname "Superprocure Quiz">
+    <!ENTITY author "shvmsaini">
+    ]>
+<resources>
+    <string name="app_name">&appname;</string>
     <string name="player1_name">Player 1</string>
     <string name="lets_go">Let\'s go!</string>
     <string name="player2_name">Player 2</string>
@@ -9,7 +13,7 @@
     <string name="starting_in_d">Starting in %1$d</string>
     <string name="challenge_now">Challenge Now</string>
     <string name="welcome">Welcome</string>
-    <string name="superprocure_quiz">Superprocure Quiz!</string>
+    <string name="superprocure_quiz">&appname;!</string>
     <string name="to">to</string>
     <string name="picture">picture of player</string>
     <string name="results">Results</string>
@@ -18,4 +22,5 @@
     <string name="go_home">Go Home</string>
     <string name="crown_image">crown image</string>
     <string name="quiz_number">%1$d/%2$s</string>
+    <string name="share">"Hi! I'm using &appname; app to play awesome multiplayer quiz. You should try!"</string>
 </resources>

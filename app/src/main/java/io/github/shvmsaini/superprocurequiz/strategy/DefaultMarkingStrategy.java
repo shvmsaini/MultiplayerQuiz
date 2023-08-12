@@ -2,6 +2,9 @@ package io.github.shvmsaini.superprocurequiz.strategy;
 
 import io.github.shvmsaini.superprocurequiz.interfaces.MarkingStrategy;
 
+/**
+ * Default Strategy to distribute marks
+ */
 public class DefaultMarkingStrategy implements MarkingStrategy {
     @Override
     public long getIncorrectMarks() {

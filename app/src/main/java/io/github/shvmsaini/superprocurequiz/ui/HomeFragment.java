@@ -17,6 +17,7 @@ import io.github.shvmsaini.superprocurequiz.dialogs.PlayerNamesDialog;
 
 public class HomeFragment extends Fragment {
     private static final int TIME_DELAY = 2000;
+    private static final String TAG = HomeFragment.class.getSimpleName();
     private static long back_pressed;
     FragmentHomeBinding binding;
 
@@ -32,7 +33,7 @@ public class HomeFragment extends Fragment {
                 new OnBackPressedCallback(true) {
                     @Override
                     public void handleOnBackPressed() {
-                        Log.d("", "handleOnBackPressed: ");
+                        Log.d(TAG, "handleOnBackPressed: ");
                         if (back_pressed + TIME_DELAY > System.currentTimeMillis())
                             Toast.makeText(requireContext(), "Press again to stop and exit.",
                                     Toast.LENGTH_SHORT).show();

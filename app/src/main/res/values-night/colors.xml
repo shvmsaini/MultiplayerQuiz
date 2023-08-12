@@ -15,7 +15,6 @@
 
     <color name="correct">#00897B</color>
     <color name="incorrect">#E53935</color>
-    <color name="gold">#FFEB3B</color>
 
     <color name="text_alt">#FFFFFF</color>
     <color name="text">#000000</color>

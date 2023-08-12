@@ -1,5 +1,8 @@
 package io.github.shvmsaini.superprocurequiz.util;
 
+/**
+ * Utility Class to store constants.
+ */
 public class Constants {
     public final static String PLAYER1_SCORE = "PLAYER1_SCORE";
     public final static String PLAYER2_SCORE = "PLAYER2_SCORE";

@@ -46,13 +46,13 @@ public class QuizFragmentViewModel extends ViewModel {
 
     public LiveData<Quiz> getNextQuiz() {
         ++currentQuizIndex;
+        Log.d(TAG, "getNextQuiz: " + currentQuizIndex +", " );
         MutableLiveData<Quiz> quizLiveData = new MutableLiveData<>();
         quizRepository.getQuizzes().observeForever(quizzes -> {
             questionsLiveData.postValue(quizzes);
             if (totalQuiz.getValue() != null && totalQuiz.getValue().equals("inf")) {
                 if (currentQuizIndex == ((List<Quiz>) quizzes).size()) {
                     currentQuizIndex = 0;
-                    Log.d(TAG, "getNextQuiz: " + currentQuizIndex +", " );
 //                    this.infoText.postValue("Wait while we get more quizzes");
                 }
                 // Tie Breaker Mode

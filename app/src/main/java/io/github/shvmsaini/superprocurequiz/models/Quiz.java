@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Quiz Model
+ */
 public class Quiz implements Parcelable {
     private ArrayList<String> incorrect_answers;
     private String category;

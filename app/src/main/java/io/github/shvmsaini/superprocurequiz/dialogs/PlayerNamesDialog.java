@@ -17,6 +17,9 @@ import io.github.shvmsaini.superprocurequiz.databinding.DialogNamesBinding;
 import io.github.shvmsaini.superprocurequiz.ui.QuizFragment;
 import io.github.shvmsaini.superprocurequiz.util.Constants;
 
+/**
+ * Dialog Box, which Asks for players names and starts QuizFragment.
+ */
 public class PlayerNamesDialog extends DialogFragment {
     DialogNamesBinding binding;
 

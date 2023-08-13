@@ -47,4 +47,5 @@ public class QuizRepository {
     public void setQuizFetchingStrategy(QuizFetchingStrategy quizFetchingStrategy) {
         this.quizFetchingStrategy = quizFetchingStrategy;
     }
+
 }

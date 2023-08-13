@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.github.shvmsaini.superprocurequiz.viewmodels.QuizFragmentViewModel" />
+
+        <import type="android.text.Html" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bgquiz">
+
+        <LinearLayout
+            android:id="@+id/progress_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progress="100"
+                app:indicatorColor="@color/pg_100"
+                app:trackColor="@color/text"
+                app:trackCornerRadius="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_profiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="vertical"
+            android:weightSum="2"
+            app:layout_constraintBottom_toTopOf="@+id/buttonPanel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_container">
+
+            <LinearLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/user1_border"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@color/transparent"
+                    android:padding="4dp"
+                    app:cardCornerRadius="64dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/user1_photoLayout"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="60dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/picture"
+                            android:maxHeight="60dp"
+                            android:src="@drawable/avatar"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="2dp" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp">
+
+
+                    <TextView
+                        android:id="@+id/user1_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/quiz_background"
+                        android:backgroundTint="@color/gold"
+                        android:gravity="center"
+                        android:minWidth="20dp"
+                        android:text="@{viewModel.player1Score.toString()}"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/user1_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{viewModel.player1Name}"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/timer_icon"
+                    android:src="@drawable/baseline_timer_24"
+                    android:text="@string/app_name"
+                    app:layout_constraintBottom_toTopOf="@id/buttonPanel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/quizLL"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@{Long.toString(viewModel.timer)}"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="end|center"
+                android:orientation="vertical"
+                android:weightSum="3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/lluser1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp">
+
+                    <TextView
+                        android:id="@+id/user2_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{viewModel.player2Name}"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/user2_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/quiz_background"
+                        android:backgroundTint="@color/gold"
+                        android:gravity="center"
+                        android:minWidth="20dp"
+                        android:text="@{viewModel.player2Score.toString()}"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/user2_border"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@color/transparent"
+                    android:padding="4dp"
+                    app:cardCornerRadius="64dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/user2_photoLayout"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="60dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/picture"
+                            android:maxHeight="60dp"
+                            android:src="@drawable/avatar" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@id/buttonPanel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ll_profiles"
+            app:layout_constraintTop_toTopOf="@id/progress_container">
+
+            <LinearLayout
+                android:id="@+id/quizLL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="12dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:minHeight="100dp"
+                            app:cardBackgroundColor="@color/darkest_blue"
+                            app:cardCornerRadius="12dp">
+
+                            <TextView
+                                android:id="@+id/question"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:background="@drawable/normal_style"
+                                android:gravity="center"
+                                android:padding="16dp"
+                                android:text="@{Html.fromHtml(viewModel.currentQuiz.question,Html.FROM_HTML_MODE_COMPACT)}"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+                        </androidx.cardview.widget.CardView>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-10dp"
+                        android:layout_marginBottom="30dp"
+                        android:backgroundTint="@color/secondary_blue"
+                        app:cardCornerRadius="10dp">
+
+                        <TextView
+                            android:id="@+id/quizNumberCV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_style"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="@{viewModel.totalQuiz == `inf` ? `Tie Breaker Round` : @string/quiz_number(viewModel.quizNumber, viewModel.totalQuiz)}"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+                    </androidx.cardview.widget.CardView>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/optionsLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:divider="@drawable/divider"
+                    android:orientation="horizontal"
+                    android:showDividers="middle"
+                    android:weightSum="2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/option1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/quiz_background"
+                            android:backgroundTint="@color/primary_blue"
+                            android:gravity="center"
+                            android:minHeight="48dp"
+                            android:padding="8dp"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/option2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/quiz_background"
+                            android:backgroundTint="@color/primary_blue"
+                            android:gravity="center"
+                            android:minHeight="48dp"
+                            android:padding="8dp"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/optionsLL2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/option3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/quiz_background"
+                            android:backgroundTint="@color/primary_blue"
+                            android:gravity="center"
+                            android:minHeight="48dp"
+                            android:padding="8dp"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/option4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/quiz_background"
+                            android:backgroundTint="@color/primary_blue"
+                            android:gravity="center"
+                            android:minHeight="48dp"
+                            android:padding="8dp"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <LinearLayout
+            android:id="@+id/buttonPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@id/ll_profiles">
+
+            <Button
+                android:id="@+id/stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/button_style"
+                android:backgroundTint="@color/incorrect"
+                android:gravity="center"
+                android:text="@string/stop"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/incorrect" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="wrap_content" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/info_text_cv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_weight="2"
+                android:backgroundTint="@color/zero_blue"
+                android:minWidth="100dp"
+                android:minHeight="48dp"
+                app:cardCornerRadius="20dp">
+
+                <TextView
+                    android:id="@+id/info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:text="@{viewModel.infoText}"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
+
+
+            <Button
+                android:id="@+id/skip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_style"
+                android:backgroundTintMode="add"
+                android:gravity="center"
+                android:text="@string/skip"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                app:backgroundTint="@null" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

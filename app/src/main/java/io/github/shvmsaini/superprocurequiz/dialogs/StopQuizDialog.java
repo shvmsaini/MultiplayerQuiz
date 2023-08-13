@@ -26,23 +26,21 @@ public class StopQuizDialog extends DialogFragment {
         binding = DialogStopQuizBinding.inflate(getLayoutInflater());
         builder.setView(binding.getRoot());
 
+        Bundle bundle = new Bundle();
 
         binding.stop.setOnClickListener(view -> {
-            Bundle bundle = new Bundle();
             bundle.putBoolean(Constants.STOP, true);
             getParentFragmentManager().setFragmentResult(Constants.STOP_KEY, bundle);
             dismiss();
         });
 
         binding.cancelButton.setOnClickListener(view -> {
-            Bundle bundle = new Bundle();
             bundle.putBoolean(Constants.STOP, false);
             getParentFragmentManager().setFragmentResult(Constants.STOP_KEY, bundle);
             dismiss();
         });
 
         Dialog dialog = builder.create();
-        dialog.setTitle("Are you sure you want to exit?");
         Objects.requireNonNull(dialog.getWindow())
                 .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return dialog;

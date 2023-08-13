@@ -1,5 +1,6 @@
 package io.github.shvmsaini.superprocurequiz.ui;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import io.github.shvmsaini.superprocurequiz.databinding.ActivityHomeBinding;
 import io.github.shvmsaini.superprocurequiz.databinding.FragmentHomeBinding;
 import io.github.shvmsaini.superprocurequiz.dialogs.PlayerNamesDialog;
 
@@ -45,5 +47,17 @@ public class HomeFragment extends Fragment {
 //                });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+//        int orientation = getResources().getConfiguration().orientation;
+//        binding = FragmentHomeBinding.inflate(getLayoutInflater());
+//        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            setContentView(binding.getRoot());
+//        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            setContentView(binding.getRoot());
+//        }
     }
 }

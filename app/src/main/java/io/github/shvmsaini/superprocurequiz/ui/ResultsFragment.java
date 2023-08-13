@@ -2,10 +2,12 @@ package io.github.shvmsaini.superprocurequiz.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +45,13 @@ public class ResultsFragment extends Fragment {
 
         getParentFragmentManager().setFragmentResultListener(Constants.RESULTS_REQUEST_KEY, this,
                 (requestKey, result) -> {
-                    viewModel.player1Score.postValue(result.getLong(Constants.PLAYER1_SCORE));
-                    viewModel.player2Score.postValue(result.getLong(Constants.PLAYER2_SCORE));
+                    final long p1score = result.getLong(Constants.PLAYER1_SCORE);
+                    final long p2score = result.getLong(Constants.PLAYER2_SCORE);
+                    viewModel.player1Score.postValue(p1score);
+                    viewModel.player2Score.postValue(p2score);
                     viewModel.player1Name.postValue(result.getString(Constants.PLAYER1_NAME));
                     viewModel.player2Name.postValue(result.getString(Constants.PLAYER2_NAME));
-                    if (result.getLong(Constants.PLAYER1_SCORE) > result.getLong(Constants.PLAYER2_SCORE)) {
+                    if (p1score > p2score) {
                         binding.crownP1.setVisibility(View.VISIBLE);
                         binding.user1Border.setBackgroundTintList(getResources().getColorStateList(
                                 R.color.gold, null
@@ -83,13 +87,10 @@ public class ResultsFragment extends Fragment {
      */
     public void shareScreenshot(View view) {
         View screenView = view.getRootView();
-//        screenView.setDrawingCacheEnabled(true);
-//        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
         Bitmap bitmap = Bitmap.createBitmap(screenView.getWidth(), screenView.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         screenView.draw(canvas);
-//        screenView.setDrawingCacheEnabled(false);
 
         try {
             Context ctx = view.getContext();
@@ -101,7 +102,7 @@ public class ResultsFragment extends Fragment {
 
             File imagePath = new File(ctx.getCacheDir(), "images");
             File newFile = new File(imagePath, "image.png");
-            Uri contentUri = FileProvider.getUriForFile(ctx, "com.example.appname.fileprovider", newFile);
+            Uri contentUri = FileProvider.getUriForFile(ctx, "io.github.shvmsaini.superprocurequiz.fileprovider", newFile);
 
             if (contentUri != null) {
                 Intent shareIntent = new Intent();
@@ -119,5 +120,14 @@ public class ResultsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+//        countDownTimer.onFinish();
+        Log.d(TAG, "onConfigurationChanged: ResultsFragment");
+        super.onConfigurationChanged(newConfig);
+//        getParentFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container_view_tag, new QuizFragment())
+//                .commit();
+    }
 
 }

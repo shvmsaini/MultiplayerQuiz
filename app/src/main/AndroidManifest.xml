@@ -17,7 +17,7 @@
         tools:targetApi="33">
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.appname.fileprovider"
+            android:authorities="io.github.shvmsaini.superprocurequiz.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -28,8 +28,6 @@
         <activity
             android:name=".ui.HomeActivity"
             android:exported="true"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>

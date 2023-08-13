@@ -16,20 +16,22 @@ import java.util.ArrayList;
 import io.github.shvmsaini.superprocurequiz.interfaces.QuizFetchingStrategy;
 import io.github.shvmsaini.superprocurequiz.models.Quiz;
 import io.github.shvmsaini.superprocurequiz.ui.HomeActivity;
-import io.github.shvmsaini.superprocurequiz.volley.VolleySingleton;
 
 /**
  * Service to fetch quiz from remote database according to QuizFetchingStrategy.
  */
 public class QuizFetchingService {
     private static final String TAG = QuizFetchingService.class.getSimpleName();
+    private static final String BASE_URL = "https://opentdb.com/";
+    private static final String API_URL = "api.php";
     QuizFetchingStrategy quizFetchingStrategy;
 
     /**
      * Initializes Instance with QuizFetchingStrategy Instance
+     *
      * @param quizFetchingStrategy QuizFetchingStrategy Instance
      */
-    public QuizFetchingService(QuizFetchingStrategy quizFetchingStrategy){
+    public QuizFetchingService(QuizFetchingStrategy quizFetchingStrategy) {
         this.quizFetchingStrategy = quizFetchingStrategy;
     }
 
@@ -37,7 +39,7 @@ public class QuizFetchingService {
      * @return Returns List of fetched quiz
      */
     public MutableLiveData<ArrayList<Quiz>> getQuizzes() {
-        final String URL = "https://opentdb.com/api.php?amount=" + quizFetchingStrategy.getTotalQuiz();
+        final String URL = BASE_URL + API_URL + "?amount=" + quizFetchingStrategy.getTotalQuiz();
         MutableLiveData<ArrayList<Quiz>> quizList = new MutableLiveData<>();
         ArrayList<Quiz> quizzes = new ArrayList<>();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {

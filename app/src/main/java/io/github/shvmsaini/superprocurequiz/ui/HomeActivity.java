@@ -3,7 +3,6 @@ package io.github.shvmsaini.superprocurequiz.ui;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,17 +10,19 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
+import io.github.shvmsaini.superprocurequiz.R;
 import io.github.shvmsaini.superprocurequiz.databinding.ActivityHomeBinding;
+import io.github.shvmsaini.superprocurequiz.databinding.FragmentHomeBinding;
 import io.github.shvmsaini.superprocurequiz.volley.VolleySingleton;
 
 public class HomeActivity extends FragmentActivity {
     private static final int TIME_DELAY = 2000;
     private static final String TAG = HomeActivity.class.getSimpleName();
     public static RequestQueue requestQueue;
+    public static VolleySingleton volleySingleton;
     private static long back_pressed;
-    public static VolleySingleton volleySingleton;;
+    ;
     QuizFragment quizFragment;
     HomeFragment homeFragment;
     ActivityHomeBinding binding;
@@ -54,7 +55,14 @@ public class HomeActivity extends FragmentActivity {
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
         Log.d(TAG, "onConfigurationChanged: Activity");
+
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
     }
 }

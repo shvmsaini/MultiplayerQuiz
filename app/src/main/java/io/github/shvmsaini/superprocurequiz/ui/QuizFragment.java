@@ -39,12 +39,18 @@ import io.github.shvmsaini.superprocurequiz.viewmodels.QuizFragmentViewModel;
 
 public class QuizFragment extends Fragment {
     private static final String TAG = QuizFragment.class.getSimpleName();
-    static int player1Score = 0;
-    static int player2Score = 0;
+    /**
+     * Temporary score after each round
+     */
+    static int player1Score = 0, player2Score = 0;
+
     QuizTakingStrategy quizTakingStrategy;
     CountDownTimer countDownTimer;
     FragmentQuizBinding binding;
     QuizFragmentViewModel viewModel;
+    /**
+     * If tie breaker mode is active or not
+     */
     boolean tieBreakerMode = false;
     /**
      * Indicates whether it's player 1 turn or not
@@ -76,19 +82,10 @@ public class QuizFragment extends Fragment {
                             Objects.requireNonNull(result.get(Constants.PLAYER1_NAME)).toString());
                     viewModel.player2Name.setValue(
                             Objects.requireNonNull(result.get(Constants.PLAYER2_NAME)).toString());
-//                    Log.d(TAG, "onCreateView: ");
-//                    boolean stop = result.getBoolean(Constants.STOP_KEY);
-//                    if (stop) {
-//                        if (countDownTimer != null)
-//                            countDownTimer.cancel();
-//                        requireActivity().finish();
-//                        startActivity(new Intent(requireActivity(), HomeActivity.class));
-//                    }
                 });
-        
+
         getParentFragmentManager().setFragmentResultListener(Constants.STOP_KEY, this, (requestKey, result) -> {
-            boolean stop = result.getBoolean(Constants.STOP);
-            if (stop) {
+            if (result.getBoolean(Constants.STOP)) {
                 if (countDownTimer != null)
                     countDownTimer.cancel();
                 requireActivity().finish();
@@ -105,10 +102,7 @@ public class QuizFragment extends Fragment {
         setupNextQuiz(options);
 
         binding.skip.setOnClickListener(view -> stopTimer());
-        binding.stop.setOnClickListener(view -> {
-            StopQuizDialog dialog = new StopQuizDialog();
-            dialog.show(getParentFragmentManager(), "Stop Quiz Dialog");
-        });
+        binding.stop.setOnClickListener(view -> new StopQuizDialog().show(getParentFragmentManager(), "Stop Quiz Dialog"));
 
         turns.observe(getViewLifecycleOwner(), turn -> {
             resetChoices();
@@ -118,12 +112,13 @@ public class QuizFragment extends Fragment {
                 makeScores();
                 final long p1finalScores = viewModel.player1Score.getValue() == null ? 0 : viewModel.player1Score.getValue();
                 final long p2finalScores = viewModel.player2Score.getValue() == null ? 0 : viewModel.player2Score.getValue();
-                if (tieBreakerMode && (p1finalScores != p2finalScores))
-                    endQuiz(p1finalScores, p2finalScores);
-                else if (turn == (quizTakingStrategy.getQuizNumber() * 2)) { // Last
-                    Log.d(TAG, "onCreateView: Final score: P1: " + p1finalScores + ", P2: " + p2finalScores);
+                if (tieBreakerMode && (p1finalScores != p2finalScores)) {
+                    showResult(options, correctAnswerInd.getValue() == null ? 0 : correctAnswerInd.getValue());
+                    new Handler().postDelayed(() -> endQuiz(p1finalScores, p2finalScores), Constants.ONE_SECOND);
+                } else if (turn == (quizTakingStrategy.getQuizNumber() * 2)) { // Last
                     if (p1finalScores != p2finalScores) {
-                        endQuiz(p1finalScores, p2finalScores);
+                        showResult(options, correctAnswerInd.getValue() == null ? 0 : correctAnswerInd.getValue());
+                        new Handler().postDelayed(() -> endQuiz(p1finalScores, p2finalScores), Constants.ONE_SECOND);
                     } else {
                         Log.d(TAG, "onCreateView: TieBreaker Round");
                         viewModel.totalQuiz.postValue("inf");
@@ -267,7 +262,7 @@ public class QuizFragment extends Fragment {
      * On finish, it starts answering timer of {@value Constants#QUIZ_DURATION_TIME} seconds
      */
     private void startQuizStartTimer() {
-        countDownTimer = new CountDownTimer(Constants.QUIZ_STARTING_TIME, 1000) {
+        countDownTimer = new CountDownTimer(Constants.QUIZ_STARTING_TIME, Constants.ONE_SECOND) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -275,10 +270,10 @@ public class QuizFragment extends Fragment {
                     binding.user1Border.setBackgroundTintList(getResources()
                             .getColorStateList(R.color.gold, null));
                     binding.user2Border.setBackgroundTintList(getResources()
-                            .getColorStateList(R.color.text, null));
+                            .getColorStateList(R.color.transparent, null));
                 } else {
                     binding.user1Border.setBackgroundTintList(getResources()
-                            .getColorStateList(R.color.text, null));
+                            .getColorStateList(R.color.transparent, null));
                     binding.user2Border.setBackgroundTintList(getResources()
                             .getColorStateList(R.color.gold, null));
                 }
@@ -303,7 +298,7 @@ public class QuizFragment extends Fragment {
      * Starts answering timer of {@value Constants#QUIZ_DURATION_TIME} seconds
      */
     private void startQuizAnsweringTimer() {
-        countDownTimer = new CountDownTimer(Constants.QUIZ_DURATION_TIME, 1000) {
+        countDownTimer = new CountDownTimer(Constants.QUIZ_DURATION_TIME, Constants.ONE_SECOND) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -365,6 +360,8 @@ public class QuizFragment extends Fragment {
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
+//        countDownTimer.cancel();
+//        countDownTimer.onFinish();
         super.onConfigurationChanged(newConfig);
         Log.d(TAG, "onConfigurationChanged: QuizFragment");
 //        getParentFragmentManager().beginTransaction()

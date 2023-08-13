@@ -25,4 +25,5 @@
     <string name="share">"Hi! I'm using &appname; app to play awesome multiplayer quiz. You should try!"</string>
     <string name="cancel">Cancel</string>
     <string name="exit_prompt">Are you sure you want to exit?</string>
+    <string name="hero_image">Hero image</string>
 </resources>

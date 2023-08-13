@@ -1,9 +1,8 @@
 package io.github.shvmsaini.superprocurequiz.viewmodels;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -33,6 +32,7 @@ public class QuizFragmentViewModel extends ViewModel {
     QuizRepository quizRepository;
     MutableLiveData<ArrayList<Quiz>> questionsLiveData = new MutableLiveData<>();
     private int currentQuizIndex = -1;
+    private Observer<ArrayList<Quiz>> observer;
 
     public QuizFragmentViewModel() {
         quizFetchingStrategy = new DefaultQuizFetchingStrategy();
@@ -41,22 +41,20 @@ public class QuizFragmentViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
+        quizRepository.getQuizzes().removeObserver(observer);
         super.onCleared();
     }
 
+    /**
+     * Gets Next Quiz from repo and sets it as current Quiz
+     *
+     * @return Quiz wrapped in LiveData
+     */
     public LiveData<Quiz> getNextQuiz() {
         ++currentQuizIndex;
-        Log.d(TAG, "getNextQuiz: " + currentQuizIndex +", " );
         MutableLiveData<Quiz> quizLiveData = new MutableLiveData<>();
-        quizRepository.getQuizzes().observeForever(quizzes -> {
+        observer = quizzes -> {
             questionsLiveData.postValue(quizzes);
-            if (totalQuiz.getValue() != null && totalQuiz.getValue().equals("inf")) {
-                if (currentQuizIndex == ((List<Quiz>) quizzes).size()) {
-                    currentQuizIndex = 0;
-//                    this.infoText.postValue("Wait while we get more quizzes");
-                }
-                // Tie Breaker Mode
-            }
             if (quizzes != null && currentQuizIndex >= 0 && currentQuizIndex < ((List<Quiz>) quizzes).size()) {
                 final Quiz quiz = quizzes.get(currentQuizIndex);
                 currentQuiz.postValue(quiz);
@@ -66,7 +64,9 @@ public class QuizFragmentViewModel extends ViewModel {
                 quizRepository.clearQuizzes();
                 currentQuizIndex = -1;
             }
-        });
+        };
+
+        quizRepository.getQuizzes().observeForever(observer);
 
         return quizLiveData;
     }

@@ -11,6 +11,6 @@ public class DefaultQuizTakingStrategy implements QuizTakingStrategy {
      */
     @Override
     public int getQuizNumber() {
-        return 5;
+        return 1;
     }
 }

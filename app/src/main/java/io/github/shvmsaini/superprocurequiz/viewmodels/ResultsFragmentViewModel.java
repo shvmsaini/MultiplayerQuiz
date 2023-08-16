@@ -11,5 +11,4 @@ public class ResultsFragmentViewModel extends ViewModel {
     public MutableLiveData<String> player2Name = new MutableLiveData<>("Player 2");
     public MutableLiveData<Long> player1Score = new MutableLiveData<>(0L);
     public MutableLiveData<Long> player2Score = new MutableLiveData<>(0L);
-
 }

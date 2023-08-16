@@ -8,11 +8,14 @@
         <variable
             name="viewModel"
             type="io.github.shvmsaini.superprocurequiz.viewmodels.ResultsFragmentViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -66,13 +69,14 @@
                     android:layout_height="40dp"
                     android:contentDescription="@string/crown_image"
                     android:src="@drawable/crown"
-                    android:visibility="invisible" />
+                    android:visibility="@{viewModel.player1Score > viewModel.player2Score ? View.VISIBLE : View.INVISIBLE, default=`invisible`}" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/user1_border"
                     android:layout_width="103dp"
                     android:layout_height="103dp"
                     android:layout_gravity="center"
+                    android:backgroundTint="@{viewModel.player1Score > viewModel.player2Score ? @color/gold : @color/background}"
                     app:cardCornerRadius="103dp">
 
                     <androidx.cardview.widget.CardView
@@ -107,15 +111,16 @@
                     android:id="@+id/crown_p2"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/crown_image"
                     android:src="@drawable/crown"
-                    android:visibility="invisible"
-                    android:contentDescription="@string/crown_image" />
+                    android:visibility="@{viewModel.player1Score &lt; viewModel.player2Score ? View.VISIBLE : View.INVISIBLE, default=`invisible`}" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/user2_border"
                     android:layout_width="103dp"
                     android:layout_height="103dp"
                     android:layout_gravity="center"
+                    android:backgroundTint="@{viewModel.player1Score &lt; viewModel.player2Score ? @color/gold : @color/background}"
                     app:cardCornerRadius="103dp">
 
                     <androidx.cardview.widget.CardView

@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    /** Volley */
+    /* Volley */
     implementation 'com.android.volley:volley:1.2.1'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'

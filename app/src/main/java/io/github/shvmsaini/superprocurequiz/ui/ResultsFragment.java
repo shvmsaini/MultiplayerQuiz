@@ -45,23 +45,10 @@ public class ResultsFragment extends Fragment {
 
         getParentFragmentManager().setFragmentResultListener(Constants.RESULTS_REQUEST_KEY, this,
                 (requestKey, result) -> {
-                    final long p1score = result.getLong(Constants.PLAYER1_SCORE);
-                    final long p2score = result.getLong(Constants.PLAYER2_SCORE);
-                    viewModel.player1Score.postValue(p1score);
-                    viewModel.player2Score.postValue(p2score);
+                    viewModel.player1Score.postValue(result.getLong(Constants.PLAYER1_SCORE));
+                    viewModel.player2Score.postValue(result.getLong(Constants.PLAYER2_SCORE));
                     viewModel.player1Name.postValue(result.getString(Constants.PLAYER1_NAME));
                     viewModel.player2Name.postValue(result.getString(Constants.PLAYER2_NAME));
-                    if (p1score > p2score) {
-                        binding.crownP1.setVisibility(View.VISIBLE);
-                        binding.user1Border.setBackgroundTintList(getResources().getColorStateList(
-                                R.color.gold, null
-                        ));
-                    } else {
-                        binding.crownP2.setVisibility(View.VISIBLE);
-                        binding.user2Border.setBackgroundTintList(getResources().getColorStateList(
-                                R.color.gold, null
-                        ));
-                    }
                 });
 
         binding.share.setOnClickListener(view -> {
@@ -122,12 +109,12 @@ public class ResultsFragment extends Fragment {
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
-//        countDownTimer.onFinish();
         Log.d(TAG, "onConfigurationChanged: ResultsFragment");
         super.onConfigurationChanged(newConfig);
-//        getParentFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container_view_tag, new QuizFragment())
-//                .commit();
+
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_view_tag, new ResultsFragment())
+                .commit();
     }
 
 }

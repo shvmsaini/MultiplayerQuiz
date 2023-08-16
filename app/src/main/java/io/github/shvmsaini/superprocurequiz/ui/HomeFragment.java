@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import io.github.shvmsaini.superprocurequiz.databinding.ActivityHomeBinding;
+import io.github.shvmsaini.superprocurequiz.R;
 import io.github.shvmsaini.superprocurequiz.databinding.FragmentHomeBinding;
 import io.github.shvmsaini.superprocurequiz.dialogs.PlayerNamesDialog;
 
@@ -32,19 +32,19 @@ public class HomeFragment extends Fragment {
         binding.create.setOnClickListener(view -> new PlayerNamesDialog()
                 .show(requireActivity().getSupportFragmentManager(), "Player Names Dialog"));
 
-//        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
-//                new OnBackPressedCallback(true) {
-//                    @Override
-//                    public void handleOnBackPressed() {
-//                        Log.d(TAG, "handleOnBackPressed: ");
-//                        if (back_pressed + TIME_DELAY > System.currentTimeMillis())
-//                            Toast.makeText(requireContext(), "Press again to stop and exit.",
-//                                    Toast.LENGTH_SHORT).show();
-//                        else
-//                            requireActivity().onBackPressed();
-//                        back_pressed = System.currentTimeMillis();
-//                    }
-//                });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        Log.d(TAG, "handleOnBackPressed: " + back_pressed);
+                        if (back_pressed + TIME_DELAY > System.currentTimeMillis())
+                            requireActivity().finish();
+                        else
+                            Toast.makeText(requireContext(), "Press again to stop and exit.",
+                                    Toast.LENGTH_SHORT).show();
+                        back_pressed = System.currentTimeMillis();
+                    }
+                });
 
         return binding.getRoot();
     }
@@ -52,12 +52,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-//        int orientation = getResources().getConfiguration().orientation;
-//        binding = FragmentHomeBinding.inflate(getLayoutInflater());
-//        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            setContentView(binding.getRoot());
-//        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            setContentView(binding.getRoot());
-//        }
+        Log.d(TAG, "onConfigurationChanged: HomeFragment");
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_view_tag, new HomeFragment())
+                .commit();
     }
 }

@@ -15,4 +15,8 @@ public class Constants {
     public static final long ONE_SECOND = 1000;
     public static final String STOP = "STOP";
     public static final String STOP_KEY = "STOP_KEY";
+    public static final String CONFIG_CHANGE_KEY = "CONFIG_CHANGE_KEY";
+    public static final String CONFIG_CHANGE = "CONFIG_CHANGE";
+    public static final String TIE_BREAKER_MODE = "TIE_BREAKER_MODE";
+    public static final String PLAYER1_TURN = "PLAYER1_TURN";
 }

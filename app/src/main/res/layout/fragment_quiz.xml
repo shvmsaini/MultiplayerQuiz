@@ -9,13 +9,15 @@
             name="viewModel"
             type="io.github.shvmsaini.superprocurequiz.viewmodels.QuizFragmentViewModel" />
 
+        <import type="android.view.View" />
+
         <import type="android.text.Html" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bgquiz">
+        android:background="@drawable/bg_quiz">
 
         <LinearLayout
             android:id="@+id/ll_profiles"
@@ -212,7 +214,7 @@
             </LinearLayout>
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progress_horizontal"
+                android:id="@+id/progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:progress="100"
@@ -266,7 +268,7 @@
                                 android:background="@drawable/normal_style"
                                 android:gravity="center"
                                 android:padding="16dp"
-                                android:text="@{Html.fromHtml(viewModel.currentQuiz.question,Html.FROM_HTML_MODE_COMPACT)}"
+                                android:text="@{Html.fromHtml(viewModel.currentQuiz.question, Html.FROM_HTML_MODE_COMPACT)}"
                                 android:textColor="@color/white"
                                 android:textSize="20sp" />
                         </androidx.cardview.widget.CardView>
@@ -318,8 +320,10 @@
                         android:gravity="center"
                         android:minHeight="48dp"
                         android:padding="8dp"
+                        android:text="@{Html.fromHtml(viewModel.option.get(0),Html.FROM_HTML_MODE_COMPACT)}"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="@{viewModel.option.get(0).length() > 0 ? View.VISIBLE : View.GONE}" />
 
                     <TextView
                         android:id="@+id/option2"
@@ -331,8 +335,10 @@
                         android:gravity="center"
                         android:minHeight="48dp"
                         android:padding="8dp"
+                        android:text="@{Html.fromHtml(viewModel.option.get(1),Html.FROM_HTML_MODE_COMPACT)}"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="@{viewModel.option.get(1).length() > 0 ? View.VISIBLE : View.GONE}" />
 
                     <TextView
                         android:id="@+id/option3"
@@ -344,8 +350,10 @@
                         android:gravity="center"
                         android:minHeight="48dp"
                         android:padding="8dp"
+                        android:text="@{Html.fromHtml(viewModel.option.get(2),Html.FROM_HTML_MODE_COMPACT)}"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="@{viewModel.option.get(2).length() > 0 ? View.VISIBLE : View.GONE}" />
 
                     <TextView
                         android:id="@+id/option4"
@@ -357,8 +365,10 @@
                         android:gravity="center"
                         android:minHeight="48dp"
                         android:padding="8dp"
+                        android:text="@{Html.fromHtml(viewModel.option.get(3),Html.FROM_HTML_MODE_COMPACT)}"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="@{viewModel.option.get(3).length() > 0 ? View.VISIBLE : View.GONE}" />
                 </LinearLayout>
             </LinearLayout>
 

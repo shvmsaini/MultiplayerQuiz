@@ -13,11 +13,12 @@ import io.github.shvmsaini.superprocurequiz.service.QuizFetchingService;
  */
 public class QuizRepository {
     private static final String TAG = QuizRepository.class.getSimpleName();
-    MutableLiveData<ArrayList<Quiz>> quizList;
-    QuizFetchingStrategy quizFetchingStrategy;
+    private MutableLiveData<ArrayList<Quiz>> quizList;
+    private QuizFetchingStrategy quizFetchingStrategy;
 
     /**
      * Initializes Repository with QuizFetchingStrategy and fetches quiz in advance.
+     *
      * @param quizFetchingStrategy QuizFetchingStrategy instance
      */
     public QuizRepository(QuizFetchingStrategy quizFetchingStrategy) {

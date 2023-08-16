@@ -46,11 +46,13 @@ public class PlayerNamesDialog extends DialogFragment {
             Bundle bundle = new Bundle();
             bundle.putString(Constants.PLAYER1_NAME, player1);
             bundle.putString(Constants.PLAYER2_NAME, player2);
+//            bundle.putBoolean(Constants.CONFIG_CHANGE, false);
 
             QuizFragment quizFragment = new QuizFragment();
             quizFragment.setArguments(bundle);
 
-            getParentFragmentManager().setFragmentResult(Constants.NAMES_REQUEST_KEY, bundle);
+            getParentFragmentManager().setFragmentResult(Constants.CONFIG_CHANGE_KEY, bundle);
+//            getParentFragmentManager().setFragmentResult(Constants.NAMES_REQUEST_KEY, bundle);
             getParentFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container_view_tag, quizFragment)

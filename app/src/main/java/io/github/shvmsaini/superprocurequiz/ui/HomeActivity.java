@@ -11,18 +11,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
 
-import io.github.shvmsaini.superprocurequiz.R;
 import io.github.shvmsaini.superprocurequiz.databinding.ActivityHomeBinding;
-import io.github.shvmsaini.superprocurequiz.databinding.FragmentHomeBinding;
 import io.github.shvmsaini.superprocurequiz.volley.VolleySingleton;
 
 public class HomeActivity extends FragmentActivity {
-    private static final int TIME_DELAY = 2000;
     private static final String TAG = HomeActivity.class.getSimpleName();
     public static RequestQueue requestQueue;
     public static VolleySingleton volleySingleton;
-    private static long back_pressed;
-    ;
     QuizFragment quizFragment;
     HomeFragment homeFragment;
     ActivityHomeBinding binding;
@@ -42,27 +37,12 @@ public class HomeActivity extends FragmentActivity {
 
         volleySingleton = VolleySingleton.getInstance(getApplicationContext());
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        if (back_pressed + TIME_DELAY > System.currentTimeMillis())
-//            Toast.makeText(this, "Press again to stop and exit.",
-//                    Toast.LENGTH_SHORT).show();
-//        else
-//            finish();
-//        back_pressed = System.currentTimeMillis();
-//    }
+
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        Log.d(TAG, "onConfigurationChanged: Activity");
-
         super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "onConfigurationChanged: HomeActivity");
     }
 
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "onDestroy: ");
-        super.onDestroy();
-    }
 }

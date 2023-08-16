@@ -9,13 +9,14 @@
             name="viewModel"
             type="io.github.shvmsaini.superprocurequiz.viewmodels.QuizFragmentViewModel" />
 
+        <import type="android.view.View" />
         <import type="android.text.Html" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bgquiz">
+        android:background="@drawable/bg_quiz">
 
         <LinearLayout
             android:id="@+id/progress_container"
@@ -26,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progress_horizontal"
+                android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:progress="100"
@@ -307,13 +308,13 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:baselineAligned="false"
                     android:divider="@drawable/divider"
                     android:orientation="horizontal"
                     android:showDividers="middle"
                     android:weightSum="2"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView"
-                    android:baselineAligned="false">
+                    app:layout_constraintTop_toBottomOf="@+id/cardView">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -326,26 +327,31 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
+                            android:text="@{Html.fromHtml(viewModel.option.get(0),Html.FROM_HTML_MODE_COMPACT)}"
                             android:background="@drawable/quiz_background"
                             android:backgroundTint="@color/primary_blue"
                             android:gravity="center"
                             android:minHeight="48dp"
                             android:padding="8dp"
+                            android:visibility="@{viewModel.option.get(0).length() > 0 ? View.VISIBLE : View.GONE}"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/option2"
+                            android:id="@+id/option3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:background="@drawable/quiz_background"
+                            android:text="@{Html.fromHtml(viewModel.option.get(2),Html.FROM_HTML_MODE_COMPACT)}"
                             android:backgroundTint="@color/primary_blue"
                             android:gravity="center"
                             android:minHeight="48dp"
+                            android:visibility="@{viewModel.option.get(2).length() > 0 ? View.VISIBLE : View.GONE}"
                             android:padding="8dp"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
+
 
                     </LinearLayout>
 
@@ -357,23 +363,28 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/option3"
+                            android:id="@+id/option2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
+                            android:text="@{Html.fromHtml(viewModel.option.get(1),Html.FROM_HTML_MODE_COMPACT)}"
                             android:background="@drawable/quiz_background"
                             android:backgroundTint="@color/primary_blue"
                             android:gravity="center"
                             android:minHeight="48dp"
+                            android:visibility="@{viewModel.option.get(1).length() > 0 ? View.VISIBLE : View.GONE}"
                             android:padding="8dp"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
+
 
                         <TextView
                             android:id="@+id/option4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
+                            android:text="@{Html.fromHtml(viewModel.option.get(3),Html.FROM_HTML_MODE_COMPACT)}"
+                            android:visibility="@{viewModel.option.get(3).length() > 0 ? View.VISIBLE : View.GONE}"
                             android:background="@drawable/quiz_background"
                             android:backgroundTint="@color/primary_blue"
                             android:gravity="center"
@@ -386,7 +397,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
 
         <LinearLayout
             android:id="@+id/buttonPanel"

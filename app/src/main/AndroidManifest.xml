@@ -13,11 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/baseline_quiz_24"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SuperprocureQuiz"
+        android:theme="@style/Theme.MultiplayerQuiz"
         tools:targetApi="33">
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="io.github.shvmsaini.superprocurequiz.fileprovider"
+            android:authorities="io.github.shvmsaini.multiplayerquiz.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="io.github.shvmsaini.superprocurequiz.viewmodels.QuizFragmentViewModel" />
+            type="io.github.shvmsaini.multiplayerquiz.viewmodels.QuizFragmentViewModel" />
 
         <import type="android.view.View" />
 
@@ -290,7 +290,7 @@
                             android:background="@drawable/button_style"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
-                            android:text="@{viewModel.totalQuiz == `inf` ? `Tie Breaker Round` : @string/quiz_number(viewModel.quizNumber, viewModel.totalQuiz)}"
+                            android:text="@{viewModel.totalQuiz == `INF` ? `Tie Breaker Round` : @string/quiz_number(viewModel.quizNumber, viewModel.totalQuiz)}"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
                     </androidx.cardview.widget.CardView>
@@ -436,6 +436,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:maxWidth="320dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_style"
                 android:backgroundTintMode="add"

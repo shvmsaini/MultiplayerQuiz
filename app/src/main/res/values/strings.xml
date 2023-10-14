@@ -1,5 +1,5 @@
 <!DOCTYPE resources [
-    <!ENTITY appname "Superprocure Quiz">
+    <!ENTITY appname "Multiplayer Quiz">
     <!ENTITY author "shvmsaini">
     ]>
 <resources>
@@ -13,7 +13,7 @@
     <string name="starting_in_d">Starting in %1$d</string>
     <string name="challenge_now">Challenge Now</string>
     <string name="welcome">Welcome</string>
-    <string name="superprocure_quiz">&appname;!</string>
+    <string name="multiplayer_quiz">&appname;!</string>
     <string name="to">to</string>
     <string name="picture">picture of player</string>
     <string name="results">Results</string>
@@ -26,4 +26,6 @@
     <string name="cancel">Cancel</string>
     <string name="exit_prompt">Are you sure you want to exit?</string>
     <string name="hero_image">Hero image</string>
+    <string name="choose_an_app">Choose an app</string>
+    <string name="loading_more_questions">Loading more questions...</string>
 </resources>

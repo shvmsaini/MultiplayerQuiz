@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    namespace 'io.github.shvmsaini.superprocurequiz'
+    namespace 'io.github.shvmsaini.multiplayerquiz'
     compileSdk 33
 
     defaultConfig {
-        applicationId "io.github.shvmsaini.superprocurequiz"
+        applicationId "io.github.shvmsaini.multiplayerquiz"
         minSdk 26
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,7 +35,8 @@ android {
 
 dependencies {
     /* Volley */
-    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'

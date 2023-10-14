@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="io.github.shvmsaini.superprocurequiz.viewmodels.ResultsFragmentViewModel" />
+            type="io.github.shvmsaini.multiplayerquiz.viewmodels.ResultsFragmentViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -39,7 +39,7 @@
                 android:id="@+id/player_won"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{(viewModel.player1Score &gt; viewModel.player2Score ? viewModel.player1Name : viewModel.player2Name)}"
+                android:text="@{(viewModel.player1Score &gt; viewModel.player2Score ? viewModel.player1Name : viewModel.player2Name) + ` Won`}"
                 android:textSize="40sp"
                 android:textStyle="bold" />
         </LinearLayout>
